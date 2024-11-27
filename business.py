@@ -1,82 +1,68 @@
 import uuid
-class FileControl():
+class stock():
+    stock_data = [
+        {"id": "eae21a1dc-5fbc-490e-90dc-aa19057028e0","name":"เหล้าขาว","quantity": 5,"price": 900},
+        {"id": "e3100df65-6ac7-4f4e-80ae-f26266e0748c","name":"เหล้ารัม","quantity": 4,"price": 2500},
+    ]
+
     def __init__(self) -> None:
         pass
 
-    @staticmethod
-    def write_to_file(file_path: str, data: str, mode: str = "a"):
-        """
-        เขียนข้อมูลลงไฟล์
-        :param file_path: ที่อยู่ของไฟล์
-        :param data: ข้อมูลที่ต้องการบันทึก
-        :param mode: โหมดการเขียน ("w" สำหรับเขียนทับ, "a" สำหรับเพิ่มข้อมูล)
-        """
-        try:
-            with open(file_path, mode, encoding="utf-8") as file:
-                file.write(data + "\n")
-            print(f"Data written to {file_path} successfully.")
-        except Exception as e:
-            with open(file_path, "w", encoding="utf-8") as file:
-                file.write(data + "\n")
-            print(f"Create New file to {file_path} successfully.")
-
-
-            
-    @staticmethod
-    def read_from_file(file_path: str) -> list[str]:
-        """
-        อ่านข้อมูลจากไฟล์
-        :param file_path: ที่อยู่ของไฟล์
-        :return: ข้อมูลทั้งหมดในไฟล์ในรูปแบบลิสต์
-        """
-        try:
-            with open(file_path, "r", encoding="utf-8") as file:
-                return file.readlines()
-        except FileNotFoundError:
-            print(f"File not found: {file_path}")
-            return []
-        except Exception as e:
-            print(f"Error reading from file: {e}")
-            return []
-        
-    @staticmethod
-    def is_duplicate(file_path: str, uuid: str, name: str) -> bool:
-        """
-        ตรวจสอบว่า UUID หรือชื่อสินค้าซ้ำในไฟล์หรือไม่
-        :param file_path: ที่อยู่ของไฟล์
-        :param uuid: UUID ของสินค้า
-        :param name: ชื่อสินค้า
-        :return: True ถ้าซ้ำ, False ถ้าไม่ซ้ำ
-        """
-        try:
-            data = FileControl.read_from_file(file_path)
-            for line in data:
-                parts = line.strip().split(" ")
-                if len(parts) < 2:
-                    continue
-                if parts[0] == uuid or parts[1] == name:
-                    return True
-            return False
-        except Exception as e:
-            print(f"Error checking duplicates: {e}")
-            return True
-            
-class Stock():
-    def __init__(self) -> None:
-        self.pathstock = "./data/stock.txt"
-    def get_pathstock(self) ->str:
-        return self.pathstock
-    def readitem_stock(self,data) -> None:
-        return data.split(" ")
-    def checkduplicate_stock(self,data,path) -> bool:
-        pass
+    def get_uuid() -> uuid:
+        return uuid.uuid4
+    
+    def readitem_stock(self)->list:
+        return self.stock_data
+    
     @classmethod
     def additem_stock(self,name: str,qty: int,price: int)->bool:
-        if(FileControl.is_duplicate(self.get_pathstock(),None,name)):
-            print("Filedata Has duplicate.")
-            return False #ยกเลิกการเพิ่มข้อมูลเนื่องจาก พบ ข้อมูลซ้ำกัน
-        else:
-            FileControl.write_to_file(self.pathstock, str(name + " " + str(qty) + " " + str(price)),"a")
-    @staticmethod
-    def generateid()->uuid:
-        return uuid.uuid1()
+        try:
+            if(stock.is_duplicate_stock(None,name)):
+                print("Has duplicate more One. can't save new data")
+                return False
+            else:
+                stock.stock_data.append({"id": self.get_uuid(), "name": name, "quantity": qty, "price": price})
+                return True
+        except Exception as Error:
+            print(Error)
+            print("Error can't Save Data To List")
+            return False
+        
+    @classmethod
+    def is_duplicate_stock(self,id:uuid,name:str):
+        for item in stock.stock_data:
+            if item["id"] == id or item["name"] == name:
+                return True
+        return False
+    
+    @classmethod
+    def deleteitem_stock(self,id:uuid)-> bool:
+        for item in stock.stock_data:
+            if item["id"] == id:
+                stock.stock_data.remove(item)
+                return True
+        return False
+class shop():
+    basket = []
+    def __init__(self) -> None:
+        pass
+    
+    def additembasket_shop(self,item:dict)->bool:
+        try:
+            if(shop.is_duplicate_shop(item)):
+                print("Has this item in backet.")
+                return False
+            else:
+                shop.basket.append({"id": self.get_uuid(), "name": item["name"], "quantity": item["quantity"], "price": item["price"]})
+                return True
+        except Exception as Error:
+            print(Error)
+            print("Error can't Save Data To List")
+            return False
+        
+    @classmethod
+    def is_duplicatebasket_shop(self,item_new:dict):
+        for item in shop.basket:
+            if item["id"] == item_new["id"] or item["name"] == item_new["name"]:
+                return True
+        return False
