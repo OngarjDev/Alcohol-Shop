@@ -1,6 +1,7 @@
 import os
 import sys
 from main import main
+from business import *
 class UIControl():
     def __init__(self):
         pass
@@ -50,6 +51,7 @@ class UIControl():
                 name_item = input("NameItem: ")
                 qty_item = int(input("QuantityItem(digit only): "))
                 price_item = int(input("PriceItem(digit only): "))
+                Stock.additem_stock(name_item,qty_item,price_item)
 
             case 2: pass
             case 3: pass
