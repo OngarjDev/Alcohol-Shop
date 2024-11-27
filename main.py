@@ -1,5 +1,6 @@
-from uicontrol import *
 from business import *
+from uicontrol import UIControl
+
 # from mysqlcontrol import *
 
 
@@ -20,7 +21,8 @@ def main():
                 case "Manage Stock": UI.stock()
                 case "BUYlog": UI.buylog()
                 case "Exit": exit()
-    except(Exception):
+    except Exception as Error:
+        print(Error)
         print("ERROR: At Main() Func The Program's Restarting")
         main()
 if __name__ == "__main__":

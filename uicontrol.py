@@ -1,6 +1,5 @@
 import os
 import sys
-from main import *
 from business import *
 class UIControl():
     def __init__(self):
@@ -43,13 +42,21 @@ class UIControl():
         selectmenu_text = "Buy Alcohol menu (input 1 order only)"
         print(selectmenu_text.center(50,"="))
         for sequence,items in enumerate(stock.readitem_stock(stock), start=1):
-            print(f"ลำดับที่:{sequence},ชื่อ:{items["name"]},จำนวน:{items["quantity"]},ราคา:{items["price"]}")
-        userinput = input("Input Order want will buy(digit): ")
-        if(shop.additembasket_shop(userinput)):
-            print("Add item in to basket Success")
-        else:
-            print("Not found order item")
+            print(f"ลำดับที่:{sequence},รหัส:{items["id"]},ชื่อ:{items["name"]},จำนวน:{items["quantity"]},ราคา:{items["price"]}")
+        idselect_userinput = uuid.UUID(input("Input id item want will buy(digit): "))
+        qty_userinput = int(input("Input quantity want buy: "))
+        item = shop.readbasket_id(shop,idselect_userinput)
 
+        if(qty_userinput <= item["quantity"] and qty_userinput != 0):
+            if(shop.additembasket_shop(shop,item["id"],item["name"],qty_userinput)):
+                print("Add item in to basket Success")
+            else:
+                print("can't add item in basket.")
+        else:
+            print(f"Sorry Product quantity Limit {item["quantity"]}")
+        print("1. pay now")
+        print("2. Shoping again")
+        print("3. back to mainmenu")
 
     @classmethod
     def stock(self) -> any:
@@ -82,9 +89,9 @@ class UIControl():
                         userinput = input("try again?(Y = Try)/n: ")
                         if(userinput == "Y" or userinput == "y"): continue
                         else: return UIControl.stock()
-                    if(stock.deleteitem_stock(select_item_delete)):
+                    if(stock.deleteitem_stock(uuid.UUID(select_item_delete))):
                         print("Delete Success")
-                        stock()
+                        return UIControl.stock()
                     else:
                         print("Error can't Delete,Id Is not correct")
                         userinput = input("try again?(Y = Try)/n: ")
@@ -92,7 +99,9 @@ class UIControl():
                         else: return UIControl.stock(stock)
             case 3: 
                 UIControl.print_itemall_stock(stock)
-                return UIControl.stock(stock)
-            case 4: main()
+                return UIControl.stock()
+            case 4: 
+                from main import main
+                main()
     def buylog(self):
         pass
