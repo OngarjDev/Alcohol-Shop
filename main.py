@@ -6,8 +6,8 @@ def main():
     print("Welcome to ALCOHOL SHOP")
     UI = UIControl()
     userselect = None
-    try:
-        while True:
+    while True:
+        try:
             userselect = UI.menustart()
             match userselect:
                 case "BUY": 
@@ -18,9 +18,15 @@ def main():
                         print("\033[31m Sorry:Staff can't sale Algohol\033[0m")
                 case "Manage Stock": UI.stock()
                 case "BUYlog": UI.buylog()
-                case "Exit": exit()
-    except(Exception):
-        print("ERROR: At Main() Func The Program's Restarting")
-        main()
+                case "Exit":
+                    print("\033[92mExiting the program.\033[0m")
+                    break  # ออกจากลูป while และโปรแกรม
+        except ValueError:
+            print("\033[31mInvalid input. Please enter a valid option.\033[0m")
+        except Exception as e:
+            print(f"ERROR: {e}")
+            print("Program will restart.\n")
+            continue  # ให้โปรแกรมดำเนินการต่อและรับคำสั่งใหม่
+
 if __name__ == "__main__":
     main()
