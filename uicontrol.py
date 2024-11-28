@@ -1,6 +1,9 @@
 from business import *
 import os
 class UIControl():
+
+    bill_id_counter = 0
+
     def __init__(self):
         pass
     
@@ -28,12 +31,12 @@ class UIControl():
     
     @classmethod
     def limitage(self)->bool:
-        selectmenu_text = "\033[93m Caution: Please check the customer's age.\033[0m"
+        selectmenu_text = "\033[1;33m Caution: Please check the customer's age.\033[0m"
         print(selectmenu_text.center(50,"="))
 
-        print("พ.ร.บ.ควบคุมเครื่องดื่มแอลกอฮอล์ พ.ศ. 2551 และ พ.ร.บ.คุ้มครองเด็ก พ.ศ.2546 ที่คุ้มครองเด็กอายุต่ำกว่า 18 ปี ต้องระวางโทษจำคุกไม่เกิน 3 เดือน หรือปรับไม่เกิน 3 หมื่นบาท หรือทั้งจำทั้งปรับ")
+        print("\033[31m พ.ร.บ.ควบคุมเครื่องดื่มแอลกอฮอล์ พ.ศ. 2551 และ พ.ร.บ.คุ้มครองเด็ก พ.ศ.2546 ที่คุ้มครองเด็กอายุต่ำกว่า 18 ปี ต้องระวางโทษจำคุกไม่เกิน 3 เดือน หรือปรับไม่เกิน 3 หมื่นบาท หรือทั้งจำทั้งปรับ\033[0m")
         
-        userinput = input("Please Input 1 letter Y(Customer Is adult)/n: ")
+        userinput = input("Please Input 1 letter Y (Customer Is 20+ years old)  N (Customer Is under 20 years old): ")
         if(userinput == "Y" or userinput == "y"):return True
         else: return False
 
@@ -96,7 +99,7 @@ class UIControl():
                 price_item = int(input("PriceItem(digit only): "))
                 if(stock.additem_stock(name_item,qty_item,price_item)):
                     print(f"Add New item. name:{name_item},quantity:{qty_item},price:{price_item}")
-                    stock()
+                    UIControl.stock()
             case 2: 
                 UIControl.print_itemall_stock(stock)
                 selectmenu_text = "Please Input Name Or uuid want deleted"
