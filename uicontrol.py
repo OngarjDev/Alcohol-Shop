@@ -1,6 +1,5 @@
-import os
-import sys
 from business import *
+import os
 class UIControl():
     def __init__(self):
         pass
@@ -38,25 +37,48 @@ class UIControl():
         if(userinput == "Y" or userinput == "y"):return True
         else: return False
 
-    def buyalcohol(self):
+    def select_alcohol(self):
         selectmenu_text = "Buy Alcohol menu (input 1 order only)"
         print(selectmenu_text.center(50,"="))
         for sequence,items in enumerate(stock.readitem_stock(stock), start=1):
             print(f"ลำดับที่:{sequence},รหัส:{items["id"]},ชื่อ:{items["name"]},จำนวน:{items["quantity"]},ราคา:{items["price"]}")
-        idselect_userinput = uuid.UUID(input("Input id item want will buy(digit): "))
+        idselect_userinput = uuid.UUID(input("Input id item want will buy: "))
         qty_userinput = int(input("Input quantity want buy: "))
-        item = shop.readbasket_id(shop,idselect_userinput)
+        item = stock.readitemid_stock(shop,idselect_userinput)
 
-        if(qty_userinput <= item["quantity"] and qty_userinput != 0):
-            if(shop.additembasket_shop(shop,item["id"],item["name"],qty_userinput)):
+        if(qty_userinput <= item["quantity"] and qty_userinput != 0 and shop.readbasket_id(shop,idselect_userinput) is None):
+            if(shop.additembasket_shop(shop,item["id"],item["name"],item["price"],qty_userinput)):
                 print("Add item in to basket Success")
             else:
                 print("can't add item in basket.")
         else:
-            print(f"Sorry Product quantity Limit {item["quantity"]}")
+            print(f"Sorry Product quantity Limit {item["quantity"]} Or Has this item in basket.")
         print("1. pay now")
         print("2. Shoping again")
-        print("3. back to mainmenu")
+        print("3. back to mainmenu(if your exit basket data will delete auto)")
+        action_user = int(input("Please Input 1 (digit): "))
+        match(action_user):
+            case 1:
+                UIControl.buyalcohol()
+            case 2:
+                UIControl.select_alcohol(shop)
+            case 3: 
+                shop.basket.clear
+                shop.order.clear
+                from main import main
+                main()
+    def buyalcohol():
+        data = shop.calculate_item_shop(shop)
+        select_text = "Please comfirm order(Y/n))"
+        print(select_text.center(50,"="))
+        selectmenu_text = input("Y/n: ")
+        if(selectmenu_text == "Y" or selectmenu_text == "y"):
+            return shop.buyitem_shop(shop,data)
+        elif(selectmenu_text == "Q" or selectmenu_text == "q"):
+            from main import main
+            return main()
+        else: 
+            return UIControl.select_alcohol(UIControl)
 
     @classmethod
     def stock(self) -> any:
@@ -103,5 +125,14 @@ class UIControl():
             case 4: 
                 from main import main
                 main()
+
     def buylog(self):
-        pass
+        try:
+            with open(os.path.abspath("./data/buylog.txt"), "r", encoding="utf-8") as file:
+                print("== ข้อมูลใน Buy Log ==")
+                for line in file:  # อ่านทีละบรรทัด
+                    print(line.strip())  # ใช้ .strip() เพื่อตัดช่องว่างและ newline
+        except FileNotFoundError:
+            print("\033[31mError: Log file not found.\033[0m")
+        except Exception as e:
+            print(f"\033[31mError reading buy log: {e}\033[0m")

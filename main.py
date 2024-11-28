@@ -15,7 +15,7 @@ def main():
                 case "BUY": 
                     adult = UI.limitage()
                     if adult:
-                        UI.buyalcohol()
+                        UI.select_alcohol()
                     else:
                         print("\033[31m Sorry:Staff can't sale Algohol\033[0m")
                 case "Manage Stock": UI.stock()

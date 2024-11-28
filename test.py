@@ -33,4 +33,5 @@ class Testui(unittest.TestCase):
 if __name__ == '__main__':
     # unittest.main()
     # Testui.test_deletestock_ui(Testui)
-    UIControl.buyalcohol(UIControl)
+    # UIControl.buyalcohol()
+    UIControl.select_alcohol(UIControl)
