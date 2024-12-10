@@ -1,9 +1,6 @@
 from business import *
 from uicontrol import UIControl
 
-# from mysqlcontrol import *
-
-
 def main():
     print("Welcome to ALCOHOL SHOP")
     UI = UIControl()

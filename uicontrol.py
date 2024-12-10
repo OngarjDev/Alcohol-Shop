@@ -66,8 +66,8 @@ class UIControl():
             case 2:
                 UIControl.select_alcohol(shop)
             case 3: 
-                shop.basket.clear
-                shop.order.clear
+                shop.setclear_basket(shop)
+                shop.setclear_order(shop)
                 from main import main
                 main()
     def buyalcohol():

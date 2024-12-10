@@ -56,6 +56,12 @@ class shop():
     def __init__(self) -> None:
         pass
     
+    def setclear_basket(this):
+        this.basket.clear
+        
+    def setclear_order(this):
+        this.order.clear
+        
     def additembasket_shop(self,iditem:uuid,name:str,price:int,qty:int)->bool:
         try:
             if(shop.is_duplicatebasket_shop(id)):
