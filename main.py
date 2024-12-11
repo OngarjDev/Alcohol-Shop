@@ -5,7 +5,6 @@ from uicontrol import UIControl
 
 
 def main():
-    print("Welcome to ALCOHOL SHOP")
     UI = UIControl()
     userselect = None
     while True:
