@@ -38,32 +38,34 @@ class UIControl():
         print(selectmenu_text.center(50,"="))
 
         print("\033[31m พ.ร.บ.ควบคุมเครื่องดื่มแอลกอฮอล์ พ.ศ. 2551 และ พ.ร.บ.คุ้มครองเด็ก พ.ศ.2546 ที่คุ้มครองเด็กอายุต่ำกว่า 18 ปี ต้องระวางโทษจำคุกไม่เกิน 3 เดือน หรือปรับไม่เกิน 3 หมื่นบาท หรือทั้งจำทั้งปรับ\033[0m")
-        
+        print(f"{'='*50}")
         userinput = input("Please Input 1 letter Y (Customer Is 20+ years old)  N (Customer Is under 20 years old): ")
         if(userinput == "Y" or userinput == "y"):return True
         else: return False
 
     def select_alcohol(self):
-        selectmenu_text = "Buy Alcohol menu (input 1 order only)"
-        print("/n" + "="*50)
+        selectmenu_text = "Menu (input 1 order only)"
+        print("\n" + "="*50)
         print(selectmenu_text.center(50))
         print("="*50)
         for sequence,items in enumerate(stock.readitem_stock(stock), start=1):
-            print(f"ลำดับที่:{sequence},รหัส:{items["id"]},ชื่อ:{items["name"]},จำนวน:{items["quantity"]},ราคา:{items["price"]}")
+            print(f"[{sequence}] ชื่อ:{items["name"]} | จำนวน:{items["quantity"]} | ราคา:{items["price"]} | รหัส:{items["id"]} | ")
+
         idselect_userinput = uuid.UUID(input("Input id item want will buy: "))
         qty_userinput = int(input("Input quantity want buy: "))
         item = stock.readitemid_stock(shop,idselect_userinput)
 
         if(qty_userinput <= item["quantity"] and qty_userinput != 0 and shop.readbasket_id(shop,idselect_userinput) is None):
             if(shop.additembasket_shop(shop,item["id"],item["name"],item["price"],qty_userinput)):
-                print("Add item in to basket Success")
+                print("\n\033[92mAdd item in to basket Success\033[0m")
+                print("-"*50)
             else:
                 print("can't add item in basket.")
         else:
             print(f"Sorry Product quantity Limit {item["quantity"]} Or Has this item in basket.")
         print("1. pay now")
-        print("2. Shoping again")
-        print("3. back to mainmenu(if your exit basket data will delete auto)")
+        print("2. Continue Shopping")
+        print("3. back to mainmenu\033[31m(if your exit basket data will delete auto)\033[0m")
         action_user = int(input("Please Input 1 (digit): "))
         match(action_user):
             case 1:
