@@ -2,6 +2,10 @@ from business import *
 from uicontrol import UIControl
 
 def main():
+    selectmenu_text = "\033[1;33m Caution: Please check the customer's age.\033[0m"
+    print(selectmenu_text.center(50,"="))
+    print("\033[31m พ.ร.บ.ควบคุมเครื่องดื่มแอลกอฮอล์ พ.ศ. 2551 และ พ.ร.บ.คุ้มครองเด็ก พ.ศ.2546 ที่คุ้มครองเด็กอายุต่ำกว่า 18 ปี ต้องระวางโทษจำคุกไม่เกิน 3 เดือน หรือปรับไม่เกิน 3 หมื่นบาท หรือทั้งจำทั้งปรับ\033[0m")
+        
     UI = UIControl()
     userselect = None
     while True:
@@ -9,11 +13,7 @@ def main():
             userselect = UI.menustart()
             match userselect:
                 case "BUY": 
-                    adult = UI.limitage()
-                    if adult:
-                        UI.select_alcohol()
-                    else:
-                        print("\033[31m Sorry:Staff can't sale Algohol\033[0m")
+                    UI.select_alcohol()
                 case "Manage Stock": UI.stock()
                 case "BUYlog": UI.buylog()
                 case "Exit":
