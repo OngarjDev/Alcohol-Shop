@@ -14,12 +14,15 @@ class UIControl():
             print(items)
     @classmethod
     def menustart(self)->str:
-        selectmenu_text = "Please select menu (input 1 digit only)"
-        print(selectmenu_text.center(50,"="))
-        print("1.Buy alcohol")
-        print("2.Check/Add/Delete Stock")
-        print("3.Buylog")
-        print("4.Exit Program")
+        selectmenu_text = " Welcome to ALCOHOL SHOP "
+        print(f"\n{'='*50}")
+        print(selectmenu_text.center(50))
+        print(f"{'='*50}")
+        print("1. 🛒 Buy Alcohol")
+        print("2. 📦 Manage Stock")
+        print("3. 📜 View Buy Log")
+        print("4. ❌ Exit Program")
+        print(f"{'='*50}")
         userinput = input("Your Input: ")
         userselect = None
         match int(userinput):
@@ -42,7 +45,9 @@ class UIControl():
 
     def select_alcohol(self):
         selectmenu_text = "Buy Alcohol menu (input 1 order only)"
-        print(selectmenu_text.center(50,"="))
+        print("/n" + "="*50)
+        print(selectmenu_text.center(50))
+        print("="*50)
         for sequence,items in enumerate(stock.readitem_stock(stock), start=1):
             print(f"ลำดับที่:{sequence},รหัส:{items["id"]},ชื่อ:{items["name"]},จำนวน:{items["quantity"]},ราคา:{items["price"]}")
         idselect_userinput = uuid.UUID(input("Input id item want will buy: "))
@@ -85,7 +90,7 @@ class UIControl():
 
     @classmethod
     def stock(self) -> any:
-        selectmenu_text = "Please action stock(input 1 digit only)"
+        selectmenu_text = "Stock Management Menu"
         print(selectmenu_text.center(50,"="))
         print("1. Add item")
         print("2. Delete item")
