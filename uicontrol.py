@@ -27,6 +27,7 @@ class UIControl():
             case 4: userselect = "Exit"
         return userselect
 
+
     def select_alcohol(self):
         selectmenu_text = "Buy Alcohol menu (input 1 order only)"
         print("="*50)
@@ -48,14 +49,15 @@ class UIControl():
 
         if(qty_userinput <= item["quantity"] and qty_userinput != 0 and shop.readbasket_id(shop,idselect_userinput) is None):
             if(shop.additembasket_shop(shop,item["id"],item["name"],item["price"],qty_userinput)):
-                print("Add item in to basket Success")
+                print("\n\033[92mAdd item in to basket Success\033[0m")
+                print("-"*50)
             else:
                 print("can't add item in basket.")
         else:
             print(f"\033[31m Sorry Product quantity Limit {item["quantity"]} Or Has this item in basket. \033[0m")
         print("1. pay now")
-        print("2. Shoping again")
-        print("3. back to mainmenu(if your exit basket data will delete auto)")
+        print("2. Continue Shopping")
+        print("3. back to mainmenu\033[31m(if your exit basket data will delete auto)\033[0m")
         action_user = int(input("Please Input 1 (digit): "))
         match(action_user):
             case 1:
