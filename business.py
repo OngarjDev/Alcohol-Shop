@@ -93,7 +93,8 @@ class shop():
     
     def buyitem_shop(self,orderlist:list)-> bool:
         if(len(orderlist) < 1): print("Not Found basket") ;return False
-        shop.savelog_shop(shop,orderlist)
+        if(shop.savelog_shop(shop,orderlist)):
+            print("\033[92mBill data has been logged successfully!\033[0m")
         for order in orderlist:
             for item in stock.stock_data:
                 if item["id"] == order["id"]:
@@ -116,7 +117,6 @@ class shop():
                     file.write(product_info)
 
                 file.write("\n")  # เว้นบรรทัด
-                print("\033[92mBill data has been logged successfully!\033[0m")
                 return True
         except Exception as e:
             print(f"\033[31mError saving buy log: {e}\033[0m")

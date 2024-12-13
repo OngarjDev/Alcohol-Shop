@@ -78,7 +78,10 @@ class UIControl():
         print(select_text.center(50,"="))
         selectmenu_text = input("Y/n: ")
         if(selectmenu_text == "Y" or selectmenu_text == "y"):
-            return shop.buyitem_shop(shop,data)
+            if(shop.buyitem_shop(shop,data)):
+                print("\033[92mBill data has been logged successfully!\033[0m")
+            else:
+                print("Error data not logged successfully")
         elif(selectmenu_text == "Q" or selectmenu_text == "q"):
             from main import main
             return main()
@@ -102,6 +105,8 @@ class UIControl():
                 if(stock.additem_stock(name_item,qty_item,price_item)):
                     print(f"Add New item. name:{name_item},quantity:{qty_item},price:{price_item}")
                     UIControl.stock()
+                else:
+                    print("Has duplicate more One. can't save new data")
             case 2: 
                 UIControl.print_itemall_stock(stock)
                 selectmenu_text = "Please Input Name Or uuid want deleted"
