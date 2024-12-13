@@ -2,13 +2,13 @@ import uuid
 import os
 class stock():
     stock_data = [
-        {"id": uuid.UUID('efb843c4-4de5-41a6-85ec-bd931e2faa9e'),"name":"เหล้าขาว","quantity": 5,"price": 900},
-        {"id": uuid.UUID('af8230e7-560b-4fa5-b9e4-ecf629be30f5'),"name":"เหล้ารัม","quantity": 4,"price": 2500},
+        {"id": uuid.UUID('efb843c4-4de5-41a6-85ec-bd931e2faa9e'),"name":"เหล้าขาว","quantity": 5,"price": 1990},
+        {"id": uuid.UUID('af8230e7-560b-4fa5-b9e4-ecf629be30f5'),"name":"เหล้ารัม","quantity": 4,"price": 2510},
+        {"id": uuid.UUID('029edf24-fef1-40bc-be31-a3a7bfd313d1'),"name":"เหล้าวอดก้า","quantity": 2,"price": 1458},
+        {"id": uuid.UUID('633e28e2-d7a1-483d-b02d-01cdaa56432a'),"name":"เหล้าวิสกี้","quantity": 10,"price": 2050},
+        {"id": uuid.UUID('25e84a68-423c-4f21-9464-8e795c7e7886'),"name":"เหล้าตากีล่า","quantity": 1,"price": 12200},
+        {"id": uuid.UUID('aaffb4f2-f778-4f6c-8860-703f2f209a50'),"name":"เหล้ากาเลียโน่","quantity": 20,"price": 2300},   
     ]
-
-    def __init__(self) -> None:
-        pass
-
     def get_uuid() -> uuid:
         return uuid.uuid4()
     
@@ -50,12 +50,11 @@ class stock():
                 return item
         return False
 class shop():
-    basket = []
-    calculate_item = []
-    order = []
-    def __init__(self) -> None:
-        pass
+    basket,calculate_item,order = [],[],[]
     
+    def setclear_basket(this):this.basket.clear() 
+    def setclear_order(this):this.order.clear()
+        
     def additembasket_shop(self,iditem:uuid,name:str,price:int,qty:int)->bool:
         try:
             if(shop.is_duplicatebasket_shop(id)):
@@ -80,6 +79,7 @@ class shop():
             if item["id"] == id:
                 return True
         return False
+    
     def calculate_item_shop(self)->list:
         total = 0
         for sequence,item in enumerate(shop.basket,start = 1):
@@ -92,15 +92,19 @@ class shop():
         return shop.calculate_item   
     
     def buyitem_shop(self,orderlist:list)-> bool:
-        shop.savelog_shop(shop,orderlist)
+        if(len(orderlist) < 1): print("Not Found basket") ;return False
+        if(shop.savelog_shop(shop,orderlist)):
+            print("\033[92mBill data has been logged successfully!\033[0m")
         for order in orderlist:
             for item in stock.stock_data:
                 if item["id"] == order["id"]:
                     item["quantity"] -= order["quantity"]
-        shop.basket.clear
+        shop.setclear_basket(shop)
+        shop.setclear_order(shop)
         return True
 
     def savelog_shop(self,order: list)-> bool:
+        if(len(order) < 1): print("Not Found order") ;return False
         try:
             with open(os.path.abspath("./data/buylog.txt"), "a", encoding="utf-8") as file:
                 idorder = stock.get_uuid()  # สร้าง UUID สำหรับคำสั่งซื้อ
@@ -113,7 +117,6 @@ class shop():
                     file.write(product_info)
 
                 file.write("\n")  # เว้นบรรทัด
-                print("\033[92mBill data has been logged successfully!\033[0m")
                 return True
         except Exception as e:
             print(f"\033[31mError saving buy log: {e}\033[0m")
