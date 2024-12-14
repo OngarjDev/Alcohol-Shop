@@ -64,6 +64,7 @@ class UIControl():
                 print("can't add item in basket.")
         else:
             print(f"\033[31m Sorry Product quantity Limit {item["quantity"]} Or Has this item in basket. \033[0m")
+            return UIControl.select_alcohol(shop)
         print("1. pay now")
         print("2. Continue Shopping")
         print("3. back to mainmenu\033[31m(if your exit basket data will delete auto)\033[0m")
@@ -91,7 +92,6 @@ class UIControl():
                 print(f"order: {sequence} ,name: {item["name"]},price: {item["price"]},quantity: {item["quantity"]},subtotal: {item["subtotal"]}")
         selectmenu_text = f"Total Price: {data[1]}"
         print(selectmenu_text.center(50,"="))
-
         select_text = "Please comfirm order(Y/n))"
         print(select_text.center(50,"="))
         selectmenu_text = input("Y/n: ")
@@ -104,8 +104,8 @@ class UIControl():
             from main import main
             return main()
         else: 
-            shop.setclear_basket(shop)
-            shop.setclear_order(shop)
+            shop.setclear_basket()
+            shop.setclear_order()
             return UIControl.select_alcohol(UIControl)
 
     @classmethod
@@ -126,7 +126,7 @@ class UIControl():
                 name_item = input("NameItem: ")
                 qty_item = int(input("QuantityItem(digit only): "))
                 price_item = int(input("PriceItem(digit only): "))
-                if(stock.additem_stock(name_item,qty_item,price_item)):
+                if(stock.additem_stock(stock,name_item,qty_item,price_item)):
                     print(f"Add New item. name:{name_item},quantity:{qty_item},price:{price_item}")
                     UIControl.stock()
                 else:
@@ -138,8 +138,6 @@ class UIControl():
                 while True:
                     try:
                         select_item_delete = str(input("id: "))
-                        print(select_item_delete)
-                        print(uuid.UUID(select_item_delete))
                     except Exception:
                         print("Sorry, Your Input Is not UUID4")
                         userinput = input("try again?(Y = Try)/n: ")
