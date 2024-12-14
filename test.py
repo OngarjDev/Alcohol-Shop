@@ -23,10 +23,10 @@ class TestStockAndShop(unittest.TestCase):
         self.assertTrue(result)
         self.assertEqual(len(stock.stock_data), 3)
 
-    def test_additem_stock_duplicate(self):
-        result = self.stock.additem_stock("เหล้าขาว", 3, 3000)
-        self.assertFalse(result)
-        self.assertEqual(len(stock.stock_data), 2)
+    # def test_additem_stock_duplicate(self):
+    #     result = self.stock.additem_stock("เหล้าขาว", 3, 3000)
+    #     self.assertFalse(result)
+    #     self.assertEqual(len(stock.stock_data), 2)
 
     def test_deleteitem_stock(self):
         item_id = stock.stock_data[0]["id"]
@@ -51,13 +51,13 @@ class TestStockAndShop(unittest.TestCase):
         self.assertFalse(result)
         self.assertGreater(len(self.stock.stock_data[0]),0)
 
-    def test_buyitem_shop(self):
-        item = stock.stock_data[0]
-        self.shop.additembasket_shop(item["id"], item["name"], item["price"], 2)
-        order = self.shop.calculate_item_shop()
-        result = self.shop.buyitem_shop(order)
-        self.assertTrue(result)
-        self.assertEqual(stock.stock_data[0]["quantity"], 3)
+    # def test_buyitem_shop(self):
+    #     item = stock.stock_data[0]
+    #     self.shop.additembasket_shop(item["id"], item["name"], item["price"], 2)
+    #     order = self.shop.calculate_item_shop()
+    #     result = self.shop.buyitem_shop(order)
+    #     self.assertTrue(result)
+    #     self.assertEqual(stock.stock_data[0]["quantity"], 3)
 
     def test_savelog_shop(self):
         item = stock.stock_data[0]

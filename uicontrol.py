@@ -27,7 +27,6 @@ class UIControl():
             case 4: userselect = "Exit"
         return userselect
 
-
     def select_alcohol(self):
         selectmenu_text = "Buy Alcohol menu (input 1 order only)"
         print("="*50)
@@ -74,6 +73,12 @@ class UIControl():
 
     def buyalcohol():
         data = shop.calculate_item_shop(shop)
+        if(data[0] is None): print("Not Found Item In Basket")
+        for sequence,item in enumerate(data[0],start=1):
+                print(f"order: {sequence} ,name: {item["name"]},price: {item["price"]},quantity: {item["quantity"]},subtotal: {item["subtotal"]}")
+        selectmenu_text = f"Total Price: {data[1]}"
+        print(selectmenu_text.center(50,"="))
+
         select_text = "Please comfirm order(Y/n))"
         print(select_text.center(50,"="))
         selectmenu_text = input("Y/n: ")
