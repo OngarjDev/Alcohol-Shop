@@ -1,21 +1,16 @@
 from business import *
 import os
 class UIControl():
-
-    bill_id_counter = 0
-
-    def __init__(self):
-        pass
-    
     def print_itemall_stock(self)->None:
         selectmenu_text = "All Item Data In Stock"
         print(selectmenu_text.center(50,"="))
         for items in stock.readitem_stock(stock):
             print(items)
+
     @classmethod
     def menustart(self)->str:
         selectmenu_text = " Welcome to ALCOHOL SHOP "
-        print(f"\n{'='*50}")
+        print(f"{'='*50}")
         print(selectmenu_text.center(50))
         print(f"{'='*50}")
         print("1. 🛒 Buy Alcohol")
@@ -31,27 +26,24 @@ class UIControl():
             case 3: userselect = "BUYlog"
             case 4: userselect = "Exit"
         return userselect
-    
-    @classmethod
-    def limitage(self)->bool:
-        selectmenu_text = "\033[1;33m Caution: Please check the customer's age.\033[0m"
-        print(selectmenu_text.center(50,"="))
 
-        print("\033[31m พ.ร.บ.ควบคุมเครื่องดื่มแอลกอฮอล์ พ.ศ. 2551 และ พ.ร.บ.คุ้มครองเด็ก พ.ศ.2546 ที่คุ้มครองเด็กอายุต่ำกว่า 18 ปี ต้องระวางโทษจำคุกไม่เกิน 3 เดือน หรือปรับไม่เกิน 3 หมื่นบาท หรือทั้งจำทั้งปรับ\033[0m")
-        print(f"{'='*50}")
-        userinput = input("Please Input 1 letter Y (Customer Is 20+ years old)  N (Customer Is under 20 years old): ")
-        if(userinput == "Y" or userinput == "y"):return True
-        else: return False
 
     def select_alcohol(self):
-        selectmenu_text = "Menu (input 1 order only)"
-        print("\n" + "="*50)
+        selectmenu_text = "Buy Alcohol menu (input 1 order only)"
+        print("="*50)
         print(selectmenu_text.center(50))
         print("="*50)
-        for sequence,items in enumerate(stock.readitem_stock(stock), start=1):
-            print(f"[{sequence}] ชื่อ:{items["name"]} | จำนวน:{items["quantity"]} | ราคา:{items["price"]} | รหัส:{items["id"]} | ")
 
-        idselect_userinput = uuid.UUID(input("Input id item want will buy: "))
+        UIControl.print_itemall_stock(UIControl)
+
+        idselect_userinput = input("Input id item want will buy(Input Q/q Move to main menu): ")
+        if(idselect_userinput == "Q" or idselect_userinput == "q"):from main import main ;main()
+        try:
+            idselect_userinput = uuid.UUID(idselect_userinput)
+        except ValueError:
+            print("uuid is not correnty")
+            UIControl.select_alcohol(UIControl)
+
         qty_userinput = int(input("Input quantity want buy: "))
         item = stock.readitemid_stock(shop,idselect_userinput)
 
@@ -62,7 +54,7 @@ class UIControl():
             else:
                 print("can't add item in basket.")
         else:
-            print(f"Sorry Product quantity Limit {item["quantity"]} Or Has this item in basket.")
+            print(f"\033[31m Sorry Product quantity Limit {item["quantity"]} Or Has this item in basket. \033[0m")
         print("1. pay now")
         print("2. Continue Shopping")
         print("3. back to mainmenu\033[31m(if your exit basket data will delete auto)\033[0m")
@@ -73,17 +65,23 @@ class UIControl():
             case 2:
                 UIControl.select_alcohol(shop)
             case 3: 
-                shop.basket.clear
-                shop.order.clear
+                shop.setclear_basket(shop)
+                shop.setclear_order(shop)
                 from main import main
                 main()
+            case _:
+                UIControl.select_alcohol(UIControl)
+
     def buyalcohol():
         data = shop.calculate_item_shop(shop)
         select_text = "Please comfirm order(Y/n))"
         print(select_text.center(50,"="))
         selectmenu_text = input("Y/n: ")
         if(selectmenu_text == "Y" or selectmenu_text == "y"):
-            return shop.buyitem_shop(shop,data)
+            if(shop.buyitem_shop(shop,data)):
+                print("\033[92mBill data has been logged successfully!\033[0m")
+            else:
+                print("Error data not logged successfully")
         elif(selectmenu_text == "Q" or selectmenu_text == "q"):
             from main import main
             return main()
@@ -107,6 +105,8 @@ class UIControl():
                 if(stock.additem_stock(name_item,qty_item,price_item)):
                     print(f"Add New item. name:{name_item},quantity:{qty_item},price:{price_item}")
                     UIControl.stock()
+                else:
+                    print("Has duplicate more One. can't save new data")
             case 2: 
                 UIControl.print_itemall_stock(stock)
                 selectmenu_text = "Please Input Name Or uuid want deleted"
