@@ -45,7 +45,7 @@ class stock():
             if item["id"] == id or item["name"] == name:
                 return True
         return False
-    
+    @classmethod
     def deleteitem_stock(cls,id:uuid)-> bool:
         for item in stock.stock_data:
             if item["id"] == id:

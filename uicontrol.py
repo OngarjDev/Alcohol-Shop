@@ -137,8 +137,6 @@ class UIControl():
                 while True:
                     try:
                         select_item_delete = str(input("id: "))
-                        print(select_item_delete)
-                        print(uuid.UUID(select_item_delete))
                     except Exception:
                         print("Sorry, Your Input Is not UUID4")
                         userinput = input("try again?(Y = Try)/n: ")

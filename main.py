@@ -1,4 +1,3 @@
-print("ปัจจุบัน 14/12/2567")
 from business import *
 from uicontrol import UIControl
 
