@@ -91,6 +91,8 @@ class UIControl():
             from main import main
             return main()
         else: 
+            shop.setclear_basket(shop)
+            shop.setclear_order(shop)
             return UIControl.select_alcohol(UIControl)
 
     @classmethod
