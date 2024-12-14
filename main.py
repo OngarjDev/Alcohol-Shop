@@ -18,7 +18,7 @@ def main():
                 case "BUYlog": UI.buylog()
                 case "Exit":
                     print("\033[92mExiting the program.\033[0m")
-                    break  # ออกจากลูป while และโปรแกรม
+                    quit()  # ออกจากลูป while และโปรแกรม
         except ValueError:
             print("\033[31mInvalid input. Please enter a valid option.\033[0m")
         except Exception as e:
