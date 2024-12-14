@@ -110,9 +110,9 @@ class shop():
             for item in stock.stock_data:
                 if item["id"] == order["id"]:
                     item["quantity"] -= order["quantity"]
-        shop.setclear_basket(shop)
-        shop.setclear_order(shop)
-        shop.setclear_calculate(shop)
+        shop.setclear_basket()
+        shop.setclear_order()
+        shop.setclear_calculate()
         return True
 
     def savelog_shop(self,order: list)-> bool:

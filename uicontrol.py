@@ -91,7 +91,6 @@ class UIControl():
                 print(f"order: {sequence} ,name: {item["name"]},price: {item["price"]},quantity: {item["quantity"]},subtotal: {item["subtotal"]}")
         selectmenu_text = f"Total Price: {data[1]}"
         print(selectmenu_text.center(50,"="))
-        del data
         select_text = "Please comfirm order(Y/n))"
         print(select_text.center(50,"="))
         selectmenu_text = input("Y/n: ")
@@ -104,8 +103,8 @@ class UIControl():
             from main import main
             return main()
         else: 
-            shop.setclear_basket(shop)
-            shop.setclear_order(shop)
+            shop.setclear_basket()
+            shop.setclear_order()
             return UIControl.select_alcohol(UIControl)
 
     @classmethod
@@ -126,7 +125,7 @@ class UIControl():
                 name_item = input("NameItem: ")
                 qty_item = int(input("QuantityItem(digit only): "))
                 price_item = int(input("PriceItem(digit only): "))
-                if(stock.additem_stock(name_item,qty_item,price_item)):
+                if(stock.additem_stock(stock,name_item,qty_item,price_item)):
                     print(f"Add New item. name:{name_item},quantity:{qty_item},price:{price_item}")
                     UIControl.stock()
                 else:
