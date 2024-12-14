@@ -16,7 +16,7 @@ class stock():
         return self.stock_data
     
     @classmethod
-    def additem_stock(cls,name: str,qty: int,price: int)->bool:
+    def additem_stock(self,name: str,qty: int,price: int)->bool:
         try:
             if(stock.is_duplicate_stock(None,name)):
                 print("Has duplicate more One. can't save new data")
