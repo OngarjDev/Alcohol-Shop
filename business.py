@@ -35,7 +35,7 @@ class stock():
             print("Error can't Save Data To List")
             return False
         
-    def is_duplicate_stock(self,id:uuid,name:str)->bool:
+    def is_duplicate_stock(id:uuid,name:str)->bool:
         """
         เช็คสินค้าซ้ำกัน ในสต๊อกสินค้า 
         @return True ตรวจพบสินค้าใน Stock
