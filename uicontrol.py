@@ -64,6 +64,7 @@ class UIControl():
                 print("can't add item in basket.")
         else:
             print(f"\033[31m Sorry Product quantity Limit {item["quantity"]} Or Has this item in basket. \033[0m")
+            return UIControl.select_alcohol(shop)
         print("1. pay now")
         print("2. Continue Shopping")
         print("3. back to mainmenu\033[31m(if your exit basket data will delete auto)\033[0m")
