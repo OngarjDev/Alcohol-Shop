@@ -2,6 +2,9 @@ from business import *
 import os
 class UIControl():
     def print_itemall_stock(self)->None:
+        """
+        เมื่อเรียกใช้มันจะ โชว์ข้อมูล สินค้าออกมาเป็น list มีไว้ใช้ซ้ำกับหน้าอื่นๆ
+        """
         selectmenu_text = "All Item Data In Stock"
         print(selectmenu_text.center(50,"="))
         for items in stock.readitem_stock(stock):
@@ -9,6 +12,9 @@ class UIControl():
 
     @classmethod
     def menustart(self)->str:
+        """
+        หน้าหลักระบบจะเรียกใช้หน้านี้รับส่งข้อมูล
+        """
         selectmenu_text = " Welcome to ALCOHOL SHOP "
         print(f"{'='*50}")
         print(selectmenu_text.center(50))
@@ -28,6 +34,10 @@ class UIControl():
         return userselect
 
     def select_alcohol(self):
+        """
+        UI หน้านี้มีไว้เพื่อแสดงผลสินค้าที่เลือก แล้ว รองรับการบันทึกไว้ใน class shop ตัวแปร basket 
+        พร้อมส่งต่อไปยังหน้า buyitem 
+        """
         selectmenu_text = "Buy Alcohol menu (input 1 order only)"
         print("="*50)
         print(selectmenu_text.center(50))
@@ -72,6 +82,9 @@ class UIControl():
                 UIControl.select_alcohol(UIControl)
 
     def buyalcohol():
+        """
+        หน้านี้เมื่อต้องการสั่งซื้อจะทำการโชว์รายการสินค้าในตะกร้า แล้ว ให้ User Comfirm ว่าถูกต้องหรือไม่ จากนั้นจะส่งการทำงานไป Buisiness Logic
+        """
         data = shop.calculate_item_shop(shop)
         if(data[0] is None): print("Not Found Item In Basket")
         for sequence,item in enumerate(data[0],start=1):
@@ -97,6 +110,10 @@ class UIControl():
 
     @classmethod
     def stock(self) -> any:
+        """
+        หน้านี้เป็นส่วนต่อขยาย สำหรับการจัดการ item ใน stock เท่านั้น เช่น เพิ่ม/ลบ/ตรวจสอบ 
+        ย้อนกลับ หากต้องการแก้ไขให้ลบสินค้าเท่านั้น
+        """
         selectmenu_text = "Stock Management Menu"
         print(selectmenu_text.center(50,"="))
         print("1. Add item")
@@ -142,8 +159,11 @@ class UIControl():
             case 4: 
                 from main import main
                 main()
-
+    
     def buylog(self):
+        """
+        หน้านี้เป็นส่วนต่อขยาย มีหน้าที่แค่แสดงผลประวัติการสั่งซื้อสินค้า ใน ~/data/buylog.txt เท่านั้น
+        """
         try:
             with open(os.path.abspath("./data/buylog.txt"), "r", encoding="utf-8") as file:
                 print("== ข้อมูลใน Buy Log ==")

@@ -1,6 +1,9 @@
 import uuid
 import os
 class stock():
+    """
+    class stock มีหน้าที่จัดการสินค้าเท่านั้น เช่น ข้อมูลตัวอย่างสำหรับการดึง ให้ uuid อ่านข้อมูลสินค้าที่มีได้ ฯ
+    """
     stock_data = [
         {"id": uuid.UUID('efb843c4-4de5-41a6-85ec-bd931e2faa9e'),"name":"เหล้าขาว","quantity": 5,"price": 1990},
         {"id": uuid.UUID('af8230e7-560b-4fa5-b9e4-ecf629be30f5'),"name":"เหล้ารัม","quantity": 4,"price": 2510},
@@ -13,10 +16,16 @@ class stock():
         return uuid.uuid4()
     
     def readitem_stock(self)->list:
+        """
+            ให้ method นี้เข้าถึงข้อมูลแทน การดึงข้อมูลจาก class โดยตรง
+        """
         return self.stock_data
     
     @classmethod
     def additem_stock(self,name: str,qty: int,price: int)->bool:
+        """
+
+        """
         try:
             if(stock.is_duplicate_stock(None,name)):
                 print("Has duplicate more One. can't save new data")
@@ -49,6 +58,10 @@ class stock():
             if item["id"] == id:
                 return item
         return False
+    
+
+
+
 class shop():
     basket,calculate_item,order = [],[],[]
     
@@ -90,9 +103,8 @@ class shop():
     
     def buyitem_shop(self,orderlist:list)-> bool:
         if(len(orderlist) < 1): print("Not Found basket") ;return False
-        if(shop.savelog_shop(shop,orderlist)):
-            print("\033[92mBill data has been logged successfully!\033[0m")
-        for order in orderlist:
+        if(shop.savelog_shop(shop,orderlist) == False):print("Error Save Log Order.")
+        for order in orderlist[0]:
             for item in stock.stock_data:
                 if item["id"] == order["id"]:
                     item["quantity"] -= order["quantity"]
