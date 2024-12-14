@@ -91,7 +91,7 @@ class UIControl():
                 print(f"order: {sequence} ,name: {item["name"]},price: {item["price"]},quantity: {item["quantity"]},subtotal: {item["subtotal"]}")
         selectmenu_text = f"Total Price: {data[1]}"
         print(selectmenu_text.center(50,"="))
-
+        del data
         select_text = "Please comfirm order(Y/n))"
         print(select_text.center(50,"="))
         selectmenu_text = input("Y/n: ")

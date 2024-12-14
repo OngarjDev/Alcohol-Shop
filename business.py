@@ -21,14 +21,11 @@ class stock():
         """
         return self.stock_data
     
-    @classmethod
     def additem_stock(self,name: str,qty: int,price: int)->bool:
         """
-
         """
         try:
-            if(stock.is_duplicate_stock(None,name)):
-                print("Has duplicate more One. can't save new data")
+            if(stock.is_duplicate_stock(stock,name)):
                 return False
             else:
                 stock.stock_data.append({"id": self.get_uuid(), "name": name, "quantity": qty, "price": price})
@@ -38,14 +35,17 @@ class stock():
             print("Error can't Save Data To List")
             return False
         
-    @classmethod
-    def is_duplicate_stock(cls,id:uuid,name:str):
+    def is_duplicate_stock(self,id:uuid,name:str)->bool:
+        """
+        เช็คสินค้าซ้ำกัน ในสต๊อกสินค้า 
+        @return True ตรวจพบสินค้าใน Stock
+        @return False ไม่พบสินค้าใน Stock
+        """
         for item in stock.stock_data:
             if item["id"] == id or item["name"] == name:
                 return True
         return False
     
-    @classmethod
     def deleteitem_stock(cls,id:uuid)-> bool:
         for item in stock.stock_data:
             if item["id"] == id:
@@ -64,13 +64,16 @@ class stock():
 
 class shop():
     basket,calculate_item,order = [],[],[]
-    
-    def setclear_basket(this):this.basket.clear() 
-    def setclear_order(this):this.order.clear()
+    @classmethod
+    def setclear_basket(self):self.basket.clear() 
+    @classmethod
+    def setclear_order(self):self.order.clear()
+    @classmethod
+    def setclear_calculate(self):self.calculate_item.clear()
         
     def additembasket_shop(self,iditem:uuid,name:str,price:int,qty:int)->bool:
         try:
-            if(shop.is_duplicatebasket_shop(id)):
+            if(shop.is_duplicatebasket_shop(shop,id)):
                 print("Has this item in backet.")
                 return False
             else:
@@ -85,9 +88,8 @@ class shop():
         for item in shop.basket:
             if item["id"] == iditem:
                 return item
- 
-    @classmethod
-    def is_duplicatebasket_shop(cls,id:uuid):
+            
+    def is_duplicatebasket_shop(self,id:uuid):
         for item in shop.basket:
             if item["id"] == id:
                 return True
@@ -110,6 +112,7 @@ class shop():
                     item["quantity"] -= order["quantity"]
         shop.setclear_basket(shop)
         shop.setclear_order(shop)
+        shop.setclear_calculate(shop)
         return True
 
     def savelog_shop(self,order: list)-> bool:
