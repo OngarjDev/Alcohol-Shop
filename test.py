@@ -1,3 +1,4 @@
+
 import unittest
 import uuid
 from io import StringIO
@@ -18,10 +19,14 @@ class TestStockAndShop(unittest.TestCase):
         shop.calculate_item.clear()
         shop.order.clear()
 
-    def test_additem_stock(self):
-        result = self.stock.additem_stock("เหล้าจิน", 3, 3000)
+    def test_buyitem_shop(self):
+        item = stock.stock_data[0]
+        self.shop.additembasket_shop(item["id"], item["name"], item["price"], 2)
+        order = self.shop.calculate_item_shop()
+        result = self.shop.buyitem_shop(order)
         self.assertTrue(result)
-        self.assertEqual(len(stock.stock_data), 3)
+        self.assertEqual(stock.stock_data[0]["quantity"], 3)
+
 
     # def test_additem_stock_duplicate(self):
     #     result = self.stock.additem_stock("เหล้าขาว", 3, 3000)
@@ -33,6 +38,28 @@ class TestStockAndShop(unittest.TestCase):
         result = self.stock.deleteitem_stock(item_id)
         self.assertTrue(result)
         self.assertEqual(len(stock.stock_data), 1)
+    
+    def test_calculate_item_shop(self):
+        item = stock.stock_data[0]
+        self.shop.additembasket_shop(item["id"], item["name"], item["price"], 2)
+        item2 = stock.stock_data[1]
+        self.shop.additembasket_shop(item2["id"], item2["name"], item2["price"], 1)
+
+        calculate_result = self.shop.calculate_item_shop()  # เรียกฟังก์ชันโดยตรง
+
+
+        self.assertEqual(len(calculate_result), 2)  # ต้องมี 2 ส่วน: รายการและราคารวม
+        self.assertIsInstance(calculate_result[0], list)  # รายการต้องเป็น list
+        self.assertIsInstance(calculate_result[1], (int, float))  # ราคารวมต้องเป็นตัวเลข
+
+ 
+        for calculated_item in calculate_result[0]:
+            self.assertIn("id", calculated_item)
+            self.assertIn("name", calculated_item)
+            self.assertIn("price", calculated_item)
+            self.assertIn("quantity", calculated_item)
+            self.assertIn("subtotal", calculated_item)
+
 
     def test_deleteitem_stock_not_found(self):
         result = self.stock.deleteitem_stock(uuid.uuid4())
