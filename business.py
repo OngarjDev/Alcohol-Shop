@@ -12,30 +12,38 @@ class stock():
         {"id": uuid.UUID('25e84a68-423c-4f21-9464-8e795c7e7886'),"name":"เหล้าตากีล่า","quantity": 1,"price": 12200},
         {"id": uuid.UUID('aaffb4f2-f778-4f6c-8860-703f2f209a50'),"name":"เหล้ากาเลียโน่","quantity": 20,"price": 2300},   
     ]
-    def get_uuid() -> uuid:
+
+    @classmethod
+    def get_uuid(cls) -> uuid:
         return uuid.uuid4()
     
-    def readitem_stock(self)->list:
+    @classmethod
+    def readitem_stock(cls)->list:
         """
             ให้ method นี้เข้าถึงข้อมูลแทน การดึงข้อมูลจาก class โดยตรง
         """
-        return self.stock_data
+        return cls.stock_data
     
-    def additem_stock(self,name: str,qty: int,price: int)->bool:
+    @classmethod
+    def additem_stock(cls,name: str,qty: int,price: int)->bool:
         """
+            เพิ่มสินค้าใน สต็อก 
+            @name ใส่ชื่อสินค้าใหม่เข้าไป ต้องไม่ซ้ำกับชื่อที่มีอยู่
+            @qty ใส่จำนวนสินค้าที่อยู่ในสต๊อก
+            @price ใส่ราคา
+            @return bool True สินค้าถูกเพิ่ม False สินค้าไม่สามารถเพิ่มได้
         """
         try:
             if(stock.is_duplicate_stock(stock,name)):
                 return False
             else:
-                stock.stock_data.append({"id": self.get_uuid(), "name": name, "quantity": qty, "price": price})
+                stock.stock_data.append({"id": cls.get_uuid(), "name": name, "quantity": qty, "price": price})
                 return True
         except Exception as Error:
-            print(Error)
-            print("Error can't Save Data To List")
-            return False
-        
-    def is_duplicate_stock(id:uuid,name:str)->bool:
+            raise(f"Error can't Save Data To List {Error}")
+    
+    @classmethod
+    def is_duplicate_stock(cls,id:uuid,name:str)->bool:
         """
         เช็คสินค้าซ้ำกัน ในสต๊อกสินค้า 
         @return True ตรวจพบสินค้าใน Stock
@@ -53,7 +61,8 @@ class stock():
                 return True
         return False
     
-    def readitemid_stock(self,id:uuid)->dict:
+    @classmethod
+    def readitemid_stock(cls,id:uuid)->dict:
         for item in stock.stock_data:
             if item["id"] == id:
                 return item
@@ -65,37 +74,38 @@ class stock():
 class shop():
     basket,calculate_item,order = [],[],[]
     @classmethod
-    def setclear_basket(self):self.basket.clear() 
+    def setclear_basket(cls):cls.basket.clear() 
     @classmethod
-    def setclear_order(self):self.order.clear()
+    def setclear_order(cls):cls.order.clear()
     @classmethod
-    def setclear_calculate(self):self.calculate_item.clear()
+    def setclear_calculate(cls):cls.calculate_item.clear()
         
-    def additembasket_shop(self,iditem:uuid,name:str,price:int,qty:int)->bool:
+    @classmethod
+    def additembasket_shop(cls,iditem:uuid,name:str,price:int,qty:int)->bool:
         try:
-            if(shop.is_duplicatebasket_shop(shop,id)):
-                print("Has this item in backet.")
-                return False
+            if(shop.is_duplicatebasket_shop(iditem)):
+                raise("Has this item in backet.")
             else:
                 shop.basket.append({"id": iditem, "name": name, "quantity": qty,"price":price})
                 return True
         except Exception as Error:
-            print(Error)
-            print("Error can't Save Data To List")
-            return False
-        
-    def readbasket_id(self,iditem:uuid)->dict:
+            raise("Error can't Save Data To List")
+    
+    @classmethod
+    def readbasket_id(cls,iditem:uuid)->dict:
         for item in shop.basket:
             if item["id"] == iditem:
                 return item
             
-    def is_duplicatebasket_shop(self,id:uuid):
+    @classmethod
+    def is_duplicatebasket_shop(cls,id:uuid):
         for item in shop.basket:
             if item["id"] == id:
                 return True
         return False
     
-    def calculate_item_shop(self)->list:
+    @classmethod
+    def calculate_item_shop(cls)->list:
         total = 0
         for item in shop.basket:
             subtotal = item["price"] * item["quantity"]
@@ -103,9 +113,10 @@ class shop():
             total += subtotal
         return [shop.calculate_item,total]   
     
-    def buyitem_shop(self,orderlist:list)-> bool:
-        if(len(orderlist) < 1): print("Not Found basket") ;return False
-        if(shop.savelog_shop(shop,orderlist) == False):print("Error Save Log Order.")
+    @classmethod
+    def buyitem_shop(cls,orderlist:list)-> bool:
+        if(len(orderlist) < 1): raise("Not Found basket") ;return False
+        if(shop.savelog_shop(orderlist) == False):raise("Error Save Log Order.")
         for order in orderlist[0]:
             for item in stock.stock_data:
                 if item["id"] == order["id"]:
@@ -115,7 +126,8 @@ class shop():
         shop.setclear_calculate()
         return True
 
-    def savelog_shop(self,order: list)-> bool:
+    @classmethod
+    def savelog_shop(cls,order: list)-> bool:
         if(len(order) < 1): print("Not Found order") ;return False
         try:
             with open(os.path.abspath("./data/buylog.txt"), "a", encoding="utf-8") as file:
@@ -131,5 +143,5 @@ class shop():
                 file.write("\n")  # เว้นบรรทัด
                 return True
         except Exception as e:
-            print(f"\033[31mError saving buy log: {e}\033[0m")
+            raise(f"\033[31mError saving buy log: {e}\033[0m")
         return False
